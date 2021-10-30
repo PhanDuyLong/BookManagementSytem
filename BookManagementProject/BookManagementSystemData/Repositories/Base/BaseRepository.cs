@@ -41,7 +41,8 @@ namespace HMS.Data.Repositories.Base
 
         public void Create(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Add(entity);
+            _dbContext.SaveChangesAsync();
         }
 
         public async Task CreateAsyn(T entity)
@@ -52,6 +53,7 @@ namespace HMS.Data.Repositories.Base
         public void Delete(T entity)
         {
             _dbSet.Remove(entity);
+            _dbContext.SaveChangesAsync();
         }
 
         public T FirstOrDefault()
@@ -61,7 +63,7 @@ namespace HMS.Data.Repositories.Base
 
         public Task<T> FirstOrDefaultAsyn()
         {
-            throw new NotImplementedException();
+            return _dbSet.FirstOrDefaultAsync();
         }
 
         public T Get<TKey>(TKey id)
@@ -82,6 +84,7 @@ namespace HMS.Data.Repositories.Base
         public void Update(T entity)
         {
             _dbSet.Update(entity);
+            _dbContext.SaveChangesAsync();
         }
 
         public IQueryable<T> Get(Expression<Func<T, bool>> predicate)
