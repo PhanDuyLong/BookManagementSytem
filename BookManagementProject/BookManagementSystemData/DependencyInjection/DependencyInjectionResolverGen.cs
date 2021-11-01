@@ -13,8 +13,6 @@ namespace HMS.Data.DependencyInjection
         {
             services.AddScoped<DbContext, BMSDBContext>();
 
-            
-
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
 
@@ -26,4 +24,3 @@ namespace HMS.Data.DependencyInjection
         }
     }
 }
-*/
