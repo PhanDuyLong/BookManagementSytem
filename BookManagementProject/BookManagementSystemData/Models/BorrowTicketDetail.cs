@@ -12,5 +12,8 @@ namespace BookManagementSystemData.Models
         public int? BorrowTicketId { get; set; }
         public DateTime? ReturnDate { get; set; }
         public bool? IsReturned { get; set; }
+
+        public virtual Book Book { get; set; }
+        public virtual BorrowTicket BorrowTicket { get; set; }
     }
 }

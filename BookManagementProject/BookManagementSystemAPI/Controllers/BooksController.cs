@@ -1,4 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BookManagementSystemData.Parameters;
+using BookManagementSystemData.Services;
+using BookManagementSystemData.Utilities;
+using BookManagementSystemData.ViewModels;
+using BookManagementSystemData.ViewModels.Book;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using StartupLand.WebAPI.Constracts.Responses;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,40 +17,134 @@ using System.Threading.Tasks;
 
 namespace BookManagementSystemAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("books")]
     [ApiController]
     public class BooksController : ControllerBase
     {
-        // GET: api/<BooksController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+
+        private readonly IBookService _bookService;
+        public BooksController(IBookService bookService)
         {
-            return new string[] { "value1", "value2" };
+            _bookService = bookService;
         }
 
-        // GET api/<BooksController>/5
+        /// <summary>
+        /// Get Specific Book
+        /// </summary>
+        /// <response code="200">Returns the specific book</response>
+        /// <response code="404">Not Found book with id</response>
+        /// <response code="500">Server break</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<BookDetailViewModel>> GetBook(int id)
         {
-            return "value";
+            var book = await _bookService.GetBookAsync(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(book);
         }
 
-        // POST api/<BooksController>
+        /// <summary>
+        /// Get Books
+        /// </summary>
+        /// <response code="200">Returns books</response>
+        /// <response code="404">Not Found books</response>
+        /// <response code="500">Server break</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpGet]
+        public async Task<ActionResult<PaginatedList<BookDetailViewModel>>> GetBooks([FromQuery] BookParameters bookParameters)
+        {
+            var books = await _bookService.GetBooksAsync(bookParameters);
+            if (books == null)
+            {
+                return NotFound();
+            }
+
+            var metadata = new
+            {
+                books.TotalCount,
+                books.PageSize,
+                books.CurrentPage,
+                books.TotalPages,
+                books.HasNext,
+                books.HasPrevious
+            };
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+            return Ok(books);
+        }
+
+        /// <summary>
+        /// Create Book
+        /// </summary>
+        /// <response code="201">Created book successfully</response>
+        /// <response code="400">Some Fields are wrong</response>
+        /// <response code="500">Server break</response>
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> PostBook([FromBody] CreateBookViewModel model)
         {
+            await _bookService.CreateBookAsync(model);
+            return CreatedAtAction("GetBook", model);
         }
 
-        // PUT api/<BooksController>/5
+        /// <summary>
+        /// Update book
+        /// </summary>
+        /// <response code="204">No return</response>
+        /// /// <response code="400">Some Fields are wrong</response>
+        /// <response code="404">Not Found book</response>
+        /// <response code="500">Server break</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> UpdateBook(string id, [FromBody] UpdateBookViewModel model)
         {
+            var book = await _bookService.GetAsyn(id);
+            if (book == null || book.Status.Equals("Deleted"))
+            {
+                return NotFound();
+            }
+
+            _bookService.UpdateBook(book, model);
+
+            return NoContent();
         }
 
-        // DELETE api/<BooksController>/5
+        /// <summary>
+        /// Delete book
+        /// </summary>
+        /// <response code="204">No return</response>
+        /// /// <response code="400">Some Fields are wrong</response>
+        /// <response code="404">Not Found book</response>
+        /// <response code="500">Server break</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> DeleteBook(int id)
         {
+            var book = await _bookService.GetAsyn(id);
+            if (book == null || book.Status.Equals("Deleted"))
+            {
+                return NotFound();
+            }
+
+            _bookService.DeleteBook(book);
+
+            return NoContent();
         }
     }
 }

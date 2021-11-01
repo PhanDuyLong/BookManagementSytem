@@ -1,4 +1,4 @@
-﻿using BookManagementSystemData.Models;
+﻿/*using BookManagementSystemData.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,3 +12,4 @@ namespace HMS.Data.DependencyInjection
         }
     }
 }
+*/
