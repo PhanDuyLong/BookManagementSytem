@@ -56,7 +56,7 @@ namespace BookManagementSystemData.Services
         public async Task<BookDetailViewModel> GetBookAsync(int id)
         {
             var book = await Get().Where(b => b.Id.Equals(id) && b.Status.Equals("Deleted")).ProjectTo<BookDetailViewModel>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
-            
+
             return book;
         }
 
