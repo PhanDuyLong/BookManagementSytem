@@ -1,4 +1,4 @@
-﻿/*using BookManagementSystemData.Models;
+﻿using BookManagementSystemData.Models;
 using HMS.Data.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace BookManagementSystemData.Repositories
     {
         public BorrowTicketDetailRepository(DbContext dbContext) : base(dbContext)
         {
-            
+
         }
         public bool isTicketDetailExists(int id)
         {
@@ -21,4 +21,3 @@ namespace BookManagementSystemData.Repositories
         }
     }
 }
-*/

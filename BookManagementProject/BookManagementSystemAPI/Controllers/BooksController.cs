@@ -109,7 +109,7 @@ namespace BookManagementSystemAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateBook(string id, [FromBody] UpdateBookViewModel model)
+        public async Task<ActionResult> UpdateBook(int id, [FromBody] UpdateBookViewModel model)
         {
             var book = await _bookService.GetAsyn(id);
             if (book == null || book.Status.Equals("Deleted"))
