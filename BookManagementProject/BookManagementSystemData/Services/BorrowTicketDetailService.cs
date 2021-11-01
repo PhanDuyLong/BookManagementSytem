@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BookManagementSystemData.Models;
 using BookManagementSystemData.Repositories;
 using BookManagementSystemData.ViewModels.BorrowTicketDetailModel;

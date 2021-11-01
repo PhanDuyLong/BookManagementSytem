@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿/*using AutoMapper;
 using BookManagementSystemData.Models;
 using BookManagementSystemData.Repositories;
 using HMS.Data.Services.Base;
@@ -18,3 +18,4 @@ namespace BookManagementSystemData.Services
         }
     }
 }
+*/
