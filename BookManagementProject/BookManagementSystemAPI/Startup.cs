@@ -1,9 +1,12 @@
 using AutoMapper;
+using BookManagementSystemData.Models;
 using HMS.Data.AutoMapperProfile;
+using HMS.Data.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,7 +41,11 @@ namespace BookManagementSystemAPI
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddMvc();
+            //services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.SuppressAsyncSuffixInActionNames = false;
+            });
 
             services.AddControllers();
 
@@ -51,6 +58,17 @@ namespace BookManagementSystemAPI
                 var filePath = Path.Combine(System.AppContext.BaseDirectory, "BMSAPI.xml");
                 c.IncludeXmlComments(filePath);
             });
+
+            
+            services.IntializerDI();
+
+            services.AddTransient<BMSDBContext, BMSDBContext>();
+            services.AddDbContext<BMSDBContext>(options =>
+            {                
+                options.UseSqlServer(Configuration.GetConnectionString("Connection"));
+                options.EnableSensitiveDataLogging(true);
+            });
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +97,8 @@ namespace BookManagementSystemAPI
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+            
         }
+        
     }
 }

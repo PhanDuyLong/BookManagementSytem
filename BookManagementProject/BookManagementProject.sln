@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookManagementSystemAPI", "BookManagementSystemAPI\BookManagementSystemAPI.csproj", "{A2F02ED7-107A-4576-937F-30C9D55599B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookManagementSystemAPI", "BookManagementSystemAPI\BookManagementSystemAPI.csproj", "{A2F02ED7-107A-4576-937F-30C9D55599B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookManagementSystemData", "BookManagementSystemData\BookManagementSystemData.csproj", "{715F015D-8000-4985-8C50-E60D8FBB3CC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookManagementSystemData", "BookManagementSystemData\BookManagementSystemData.csproj", "{715F015D-8000-4985-8C50-E60D8FBB3CC2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53E9979A-7F9B-4DAF-9470-D93CC9B0A8C9}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

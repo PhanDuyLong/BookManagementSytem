@@ -27,8 +27,8 @@ namespace BookManagementSystemData.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=localhost,1433;Initial Catalog=BMSDB;User ID=sa;Password=123456;Trusted_Connection=True;");
+
+               // optionsBuilder.UseSqlServer("Server=localhost,1433;Initial Catalog=BMSDB;User ID=sa;Password=123456;Trusted_Connection=True;");
             }
         }
 
@@ -43,6 +43,15 @@ namespace BookManagementSystemData.Models
                 entity.Property(e => e.Author).HasMaxLength(50);
 
                 entity.Property(e => e.PublishedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Books)
+                    .HasForeignKey(d => d.CategoryId)
+                    .HasConstraintName("FK_Book_Category");
             });
 
             modelBuilder.Entity<BorrowTicket>(entity =>
@@ -61,6 +70,16 @@ namespace BookManagementSystemData.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.ReturnDeadline).HasColumnType("date");
+
+                entity.HasOne(d => d.Borrower)
+                    .WithMany(p => p.BorrowTicketBorrowers)
+                    .HasForeignKey(d => d.BorrowerId)
+                    .HasConstraintName("FK_BorrowTicket_User1");
+
+                entity.HasOne(d => d.Creator)
+                    .WithMany(p => p.BorrowTicketCreators)
+                    .HasForeignKey(d => d.CreatorId)
+                    .HasConstraintName("FK_BorrowTicket_User");
             });
 
             modelBuilder.Entity<BorrowTicketDetail>(entity =>
@@ -68,6 +87,16 @@ namespace BookManagementSystemData.Models
                 entity.ToTable("BorrowTicketDetail");
 
                 entity.Property(e => e.ReturnDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Book)
+                    .WithMany(p => p.BorrowTicketDetails)
+                    .HasForeignKey(d => d.BookId)
+                    .HasConstraintName("FK_BorrowTicketDetail_Book");
+
+                entity.HasOne(d => d.BorrowTicket)
+                    .WithMany(p => p.BorrowTicketDetails)
+                    .HasForeignKey(d => d.BorrowTicketId)
+                    .HasConstraintName("FK_BorrowTicketDetail_BorrowTicket");
             });
 
             modelBuilder.Entity<Category>(entity =>
