@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BookManagementSystemData.Models;
 using BookManagementSystemData.Repositories;
 using BookManagementSystemData.ViewModels.BorrowTicketViewModel;
@@ -35,58 +36,40 @@ namespace BookManagementSystemData.Services
         //get ticket
         public async Task<IList<BorrowTicketGetItems>> GetTickets()
         {
-            var tickets = _borrowticketrepo.Get().ToList();
+            var tickets = await Get()
+               .ProjectTo<BorrowTicketGetItems>(_mapper.ConfigurationProvider).ToListAsync();
             if (tickets == null)
             {
                 return null;
             }
 
-            IList<BorrowTicketGetItems> listBooking = new List<BorrowTicketGetItems>();
-
-            foreach (var item in tickets)
-            {
-                listBooking.Add(_mapper.Map<BorrowTicketGetItems>(item));
-            }
-
-            return listBooking;
+            return tickets;
         }
 
         //get list ticket by borrowerId
         public async Task<IList<BorrowTicketGetItems>> GetTicketsByBorrowerId(string borrowerId)
         {
-            var tickets = _borrowticketrepo.Get().ToList().Where(n => n.BorrowerId.Trim().ToLower() == borrowerId.ToLower());
+            var tickets = await Get(n => n.BorrowerId.Trim().ToLower() == borrowerId.ToLower())
+                .ProjectTo<BorrowTicketGetItems>(_mapper.ConfigurationProvider).ToListAsync();
             if (tickets == null)
             {
                 return null;
             }
-            IList<BorrowTicketGetItems> listTicket = new List<BorrowTicketGetItems>();
 
-            foreach (var item in tickets)
-            {
-                listTicket.Add(_mapper.Map<BorrowTicketGetItems>(item));
-            }
-
-
-            return listTicket;
+            return tickets;
         }
 
         //get list ticket by status
         public async Task<IList<BorrowTicketGetItems>> GetTicketsByStatus(bool status)
         {
-            var tickets = _borrowticketrepo.Get().ToList().Where(n => n.IsDone == status);
+            var tickets = await Get(n => n.IsDone == status)
+                .ProjectTo<BorrowTicketGetItems>(_mapper.ConfigurationProvider).ToListAsync();
             if (tickets == null)
             {
                 return null;
             }
-            IList<BorrowTicketGetItems> listTicket = new List<BorrowTicketGetItems>();
 
-            foreach (var item in tickets)
-            {
-                listTicket.Add(_mapper.Map<BorrowTicketGetItems>(item));
-            }
-
-
-            return listTicket;
+            return tickets;
         }
         //create ticket
         public async Task<BorrowTicket> CreateTicket(BorrowTicketCreateItem ticketCreate)

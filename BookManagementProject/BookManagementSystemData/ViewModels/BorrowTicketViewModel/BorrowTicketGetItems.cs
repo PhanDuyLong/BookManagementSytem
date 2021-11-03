@@ -15,5 +15,7 @@ namespace BookManagementSystemData.ViewModels.BorrowTicketViewModel
         public DateTime? ReturnDeadline { get; set; }
         public bool? IsDone { get; set; }
         public string BorrowerId { get; set; }
+        public string CreateName { get; set; }
+        public string BorrowName { get; set; }
     }
 }
