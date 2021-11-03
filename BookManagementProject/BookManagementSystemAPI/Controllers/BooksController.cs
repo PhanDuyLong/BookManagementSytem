@@ -23,9 +23,24 @@ namespace BookManagementSystemAPI.Controllers
     {
 
         private readonly IBookService _bookService;
-        public BooksController(IBookService bookService)
+        private readonly ICategoryService _categoryService;
+        public BooksController(IBookService bookService, ICategoryService categoryService)
         {
             _bookService = bookService;
+            _categoryService = categoryService;
+        }
+
+        
+        [HttpGet("category")]
+        public async Task<ActionResult<BookDetailViewModel>> GetCategory()
+        {
+            var categories = await _categoryService.GetCategoriesAsync();
+            if (categories == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(categories);
         }
 
         /// <summary>

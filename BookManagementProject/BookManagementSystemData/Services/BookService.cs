@@ -46,9 +46,9 @@ namespace BookManagementSystemData.Services
 
         public async Task<PaginatedList<BookDetailViewModel>> GetBooksAsync(BookParameters bookParameters)
         {
-            var companies = await _bookRepository.FindBooksAsync(bookParameters);
+            var companies = _bookRepository.FindBooksAsync(bookParameters);
 
-            var model = MappingBookListDto<BookDetailViewModel>(companies);
+            var model = await companies.ProjectTo<BookDetailViewModel>(_mapper.ConfigurationProvider).ToListAsync() ;
 
             return PaginatedList<BookDetailViewModel>.ToPagedList(model, bookParameters.PageNumber, bookParameters.PageSize);
         }

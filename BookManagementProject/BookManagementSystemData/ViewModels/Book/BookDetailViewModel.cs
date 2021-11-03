@@ -14,5 +14,6 @@ namespace BookManagementSystemData.ViewModels.Book
         public DateTime? PublishedDate { get; set; }
         public string Status { get; set; }
         public string CategoryName { get; set; }
+        public int? CategoryId { get; set; }
     }
 }
