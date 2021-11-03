@@ -36,7 +36,7 @@ namespace BookManagementSystemData.Services
         //get ticket
         public async Task<IList<BorrowTicketGetItems>> GetTickets()
         {
-            var tickets = await Get()
+            var tickets = await Get().OrderByDescending(a => a.BorrowDate)
                .ProjectTo<BorrowTicketGetItems>(_mapper.ConfigurationProvider).ToListAsync();
             if (tickets == null)
             {
@@ -49,7 +49,7 @@ namespace BookManagementSystemData.Services
         //get list ticket by borrowerId
         public async Task<IList<BorrowTicketGetItems>> GetTicketsByBorrowerId(string borrowerId)
         {
-            var tickets = await Get(n => n.BorrowerId.Trim().ToLower() == borrowerId.ToLower())
+            var tickets = await Get(n => n.BorrowerId.Trim().ToLower() == borrowerId.ToLower()).OrderByDescending(a => a.BorrowDate)
                 .ProjectTo<BorrowTicketGetItems>(_mapper.ConfigurationProvider).ToListAsync();
             if (tickets == null)
             {
@@ -62,7 +62,7 @@ namespace BookManagementSystemData.Services
         //get list ticket by status
         public async Task<IList<BorrowTicketGetItems>> GetTicketsByStatus(bool status)
         {
-            var tickets = await Get(n => n.IsDone == status)
+            var tickets = await Get(n => n.IsDone == status).OrderByDescending(a => a.BorrowDate)
                 .ProjectTo<BorrowTicketGetItems>(_mapper.ConfigurationProvider).ToListAsync();
             if (tickets == null)
             {

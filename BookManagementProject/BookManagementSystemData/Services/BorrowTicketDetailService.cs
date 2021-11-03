@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BookManagementSystemData.Models;
 using BookManagementSystemData.Repositories;
 using BookManagementSystemData.ViewModels.BorrowTicketDetailModel;
@@ -31,20 +32,14 @@ namespace BookManagementSystemData.Services
         //get list ticket detail by ticket id
         public async Task<IList<BorrowTicketDetailGetItems>> GetTicketDetailsByTicketId(int ticketId)
         {
-            var tickets = _borrowticketdetailrepo.Get().ToList().Where(n => n.BorrowTicketId == ticketId);
+            var tickets = await Get(n => n.BorrowTicketId == ticketId)
+                .ProjectTo<BorrowTicketDetailGetItems>(_mapper.ConfigurationProvider).ToListAsync();
             if (tickets == null || !tickets.Any())
             {
                 return null;
             }
-            IList<BorrowTicketDetailGetItems> listTicket = new List<BorrowTicketDetailGetItems>();
 
-            foreach (var item in tickets)
-            {
-                listTicket.Add(_mapper.Map<BorrowTicketDetailGetItems>(item));
-            }
-
-
-            return listTicket;
+            return tickets;
         }
 
         /*
