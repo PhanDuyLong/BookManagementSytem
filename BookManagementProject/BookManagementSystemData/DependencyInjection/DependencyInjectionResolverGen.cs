@@ -16,6 +16,9 @@ namespace HMS.Data.DependencyInjection
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
 
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IBookService, BookService>();
+
             services.AddScoped<IBorrowTicketRepository, BorrowTicketRepository>();
             services.AddScoped<IBorrowTicketService, BorrowTicketService>();
 
