@@ -20,7 +20,7 @@ namespace BookManagementSystemData.Services
         public Task<BorrowTicket> CreateTicket(BorrowTicketCreateItem ticketCreate);
         public Task<bool> UpdateTicket(int id, BorrowTicketUpdateItem ticketUpdate);
         public Task<bool> DeleteTicket(int id);
-
+        Task<BorrowTicketGetItems> GetTicketById(int id);
 
     }
     public class BorrowTicketService : BaseService<BorrowTicket>, IBorrowTicketService
@@ -45,6 +45,21 @@ namespace BookManagementSystemData.Services
 
             return tickets;
         }
+
+
+        //get by id
+        public async Task<BorrowTicketGetItems> GetTicketById(int id)
+        {
+            var tickets = await Get(t => t.Id == id).OrderByDescending(a => a.BorrowDate)
+               .ProjectTo<BorrowTicketGetItems>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+            if (tickets == null)
+            {
+                return null;
+            }
+
+            return tickets;
+        }
+
 
         //get list ticket by borrowerId
         public async Task<IList<BorrowTicketGetItems>> GetTicketsByBorrowerId(string borrowerId)

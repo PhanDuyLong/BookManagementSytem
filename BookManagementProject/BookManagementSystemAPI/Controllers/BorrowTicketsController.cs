@@ -32,6 +32,20 @@ namespace BookManagementSystemAPI.Controllers
             return Ok(result);
         }
 
+
+        // GET: Ticket
+        [HttpGet("id")]
+        public async Task<ActionResult<IEnumerable<BorrowTicketGetItems>>> GetTicketById(int id)
+        {
+            var result = await _ticketService.GetTicketById(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+
+
         // GET: api/name
         [HttpGet("borrowerId")]
         public async Task<ActionResult<BorrowTicket>> GetBookingByBorrowerId(string borrowerId)

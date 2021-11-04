@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using BookManagementSystemData.Models;
 using BookManagementSystemData.Repositories;
 using BookManagementSystemData.ViewModels.BorrowTicketDetailModel;
+using BookManagementSystemData.ViewModels.BorrowTicketViewModel;
 using HMS.Data.Services.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -23,10 +24,14 @@ namespace BookManagementSystemData.Services
     {
         private readonly IMapper _mapper;
         private readonly IBorrowTicketDetailRepository _borrowticketdetailrepo;
-        public BorrowTicketDetailService(DbContext dbContext, IBorrowTicketDetailRepository repository, IMapper mapper) : base(dbContext, repository)
+        private readonly IBorrowTicketRepository _borrowTicketRepository;
+        public BorrowTicketDetailService(DbContext dbContext, 
+            IBorrowTicketDetailRepository repository, IMapper mapper,
+            IBorrowTicketRepository borrowTicketRepository) : base(dbContext, repository)
         {
             _mapper = mapper;
             _borrowticketdetailrepo = repository;
+            _borrowTicketRepository = borrowTicketRepository;
         }
 
         //get list ticket detail by ticket id
@@ -87,10 +92,27 @@ namespace BookManagementSystemData.Services
         {
             if (_borrowticketdetailrepo.isTicketDetailExists(id))
             {
-                BorrowTicketDetail ticket = _mapper.Map<BorrowTicketDetail>(ticketDetailUpdate);
-                //ticket.IsDone = !ticket.IsDone;
-                _borrowticketdetailrepo.Update(ticket);
+                await _borrowticketdetailrepo.UpdateAsyn(_mapper.Map<BorrowTicketDetail>(ticketDetailUpdate));
+                var ticket = await _borrowTicketRepository.Get(t => t.Id == ticketDetailUpdate.BorrowTicketId)
+                    .ProjectTo<BorrowTicketGetItems>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+                bool check = true;
+                foreach (var item in ticket.BorrowTicketDetails)
+                {
+                    if(item.IsReturned == null || (bool)!item.IsReturned)
+                    {
+                        check = false;
+                    }
+                }
+                if (check)
+                {
+                    var updateTicket = _mapper.Map<BorrowTicket>(ticket);
+                    updateTicket.IsDone = true;
+                    updateTicket.BorrowTicketDetails = null;
+                    await _borrowTicketRepository.UpdateAsyn(updateTicket);
+                }
+
                 return true;
+
             }
             else
             {

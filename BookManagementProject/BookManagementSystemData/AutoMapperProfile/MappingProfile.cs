@@ -26,6 +26,7 @@ namespace HMS.Data.AutoMapperProfile
             //get
             CreateMap<BorrowTicketDetail, BorrowTicketDetailGetItems>()
                 .ForMember(dest => dest.BookName, opt => opt.MapFrom(src => src.Book.Name));
+            CreateMap<BorrowTicketDetailGetItems, BorrowTicketDetail>();
             CreateMap<BorrowTicketDetailCreateItem, BorrowTicketDetail>();
             CreateMap<BorrowTicketDetailUpdateItem, BorrowTicketDetail>();
 
@@ -34,6 +35,7 @@ namespace HMS.Data.AutoMapperProfile
             CreateMap<BorrowTicket, BorrowTicketGetItems>()
             .ForMember(dest => dest.CreateName, opt => opt.MapFrom(src => src.Creator.Name))
             .ForMember(dest => dest.BorrowName, opt => opt.MapFrom(src => src.Borrower.Name));
+            CreateMap<BorrowTicketGetItems, BorrowTicket>();
             CreateMap<BorrowTicketCreateItem, BorrowTicket>();
             CreateMap<BorrowTicketUpdateItem, BorrowTicket>();
         }

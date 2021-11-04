@@ -26,8 +26,11 @@ namespace BookManagementSystemData.Services
     {
         private readonly IMapper _mapper;
         private readonly IBookRepository _bookRepository;
-        public BookService(DbContext dbContext, IBookRepository repository, IMapper mapper) : base(dbContext, repository)
+        private readonly IBorrowTicketDetailRepository _borrowTicketDetailRepository;
+        public BookService(DbContext dbContext, IBookRepository repository, IMapper mapper,
+            IBorrowTicketDetailRepository borrowTicketDetailRepository) : base(dbContext, repository)
         {
+            _borrowTicketDetailRepository = borrowTicketDetailRepository;
             _mapper = mapper;
             _bookRepository = repository;
         }
@@ -48,7 +51,16 @@ namespace BookManagementSystemData.Services
         {
             var companies = _bookRepository.FindBooksAsync(bookParameters);
 
-            var model = await companies.ProjectTo<BookDetailViewModel>(_mapper.ConfigurationProvider).ToListAsync() ;
+            var model = await companies.ProjectTo<BookDetailViewModel>(_mapper.ConfigurationProvider).ToListAsync();
+            var item = _borrowTicketDetailRepository.Get();
+
+            foreach(var b in model)
+            {
+                if(item.Where(a => a.BookId == b.Id).Any(a => a.IsReturned == false))
+                {
+                    b.Status = "Borrowing";
+                }
+            }
 
             return PaginatedList<BookDetailViewModel>.ToPagedList(model, bookParameters.PageNumber, bookParameters.PageSize);
         }
@@ -56,7 +68,7 @@ namespace BookManagementSystemData.Services
         public async Task<BookDetailViewModel> GetBookAsync(int id)
         {
             var book = await Get().Where(b => b.Id.Equals(id) && b.Status.Equals("Deleted")).ProjectTo<BookDetailViewModel>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
-
+            
             return book;
         }
 
