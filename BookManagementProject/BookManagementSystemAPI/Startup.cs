@@ -48,6 +48,10 @@ namespace BookManagementSystemAPI
             });
 
             services.AddControllers();
+            services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 
             services.AddSwaggerGen(c =>
             {
@@ -59,12 +63,12 @@ namespace BookManagementSystemAPI
                 c.IncludeXmlComments(filePath);
             });
 
-            
+
             services.IntializerDI();
 
             services.AddTransient<BMSDBContext, BMSDBContext>();
             services.AddDbContext<BMSDBContext>(options =>
-            {                
+            {
                 options.UseSqlServer(Configuration.GetConnectionString("Connection"));
                 options.EnableSensitiveDataLogging(true);
             });

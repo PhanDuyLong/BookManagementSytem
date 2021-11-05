@@ -76,12 +76,12 @@ namespace BookManagementSystemAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<BorrowTicket>> PostTicket([FromBody] BorrowTicketCreateItem ticket)
         {
-            var result = _ticketService.CreateTicket(ticket);
+            var result = await _ticketService.CreateTicket(ticket);
             if (result == null)
             {
                 return Conflict();
             }
-            return CreatedAtAction("GetTicketById", new { id = result.Id }, result);
+            return Ok(result);
         }
         //PUT:
         [HttpPut("{id}")]

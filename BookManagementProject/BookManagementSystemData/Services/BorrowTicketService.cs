@@ -17,7 +17,7 @@ namespace BookManagementSystemData.Services
         public Task<IList<BorrowTicketGetItems>> GetTickets();
         public Task<IList<BorrowTicketGetItems>> GetTicketsByBorrowerId(string borrowerId);
         public Task<IList<BorrowTicketGetItems>> GetTicketsByStatus(bool status);
-        public Task<BorrowTicket> CreateTicket(BorrowTicketCreateItem ticketCreate);
+        public Task<BorrowTicketCreateItem> CreateTicket(BorrowTicketCreateItem ticketCreate);
         public Task<bool> UpdateTicket(int id, BorrowTicketUpdateItem ticketUpdate);
         public Task<bool> DeleteTicket(int id);
         Task<BorrowTicketGetItems> GetTicketById(int id);
@@ -87,11 +87,10 @@ namespace BookManagementSystemData.Services
             return tickets;
         }
         //create ticket
-        public async Task<BorrowTicket> CreateTicket(BorrowTicketCreateItem ticketCreate)
+        public async Task<BorrowTicketCreateItem> CreateTicket(BorrowTicketCreateItem ticketCreate)
         {
-            BorrowTicket ticket = _mapper.Map<BorrowTicket>(ticketCreate);
-            _borrowticketrepo.Create(ticket);
-            return ticket;
+            await _borrowticketrepo.CreateAsyn(_mapper.Map<BorrowTicket>(ticketCreate));
+            return ticketCreate;
         }
 
         //update 

@@ -49,6 +49,7 @@ namespace HMS.Data.Repositories.Base
         public async Task CreateAsyn(T entity)
         {
             await _dbSet.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         public void Delete(T entity)
