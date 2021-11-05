@@ -23,9 +23,24 @@ namespace BookManagementSystemAPI.Controllers
     {
 
         private readonly IBookService _bookService;
-        public BooksController(IBookService bookService)
+        private readonly ICategoryService _categoryService;
+        public BooksController(IBookService bookService, ICategoryService categoryService)
         {
             _bookService = bookService;
+            _categoryService = categoryService;
+        }
+
+        
+        [HttpGet("category")]
+        public async Task<ActionResult<BookDetailViewModel>> GetCategory()
+        {
+            var categories = await _categoryService.GetCategoriesAsync();
+            if (categories == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(categories);
         }
 
         /// <summary>
@@ -109,7 +124,7 @@ namespace BookManagementSystemAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateBook(string id, [FromBody] UpdateBookViewModel model)
+        public async Task<ActionResult> UpdateBook(int id, [FromBody] UpdateBookViewModel model)
         {
             var book = await _bookService.GetAsyn(id);
             if (book == null || book.Status.Equals("Deleted"))

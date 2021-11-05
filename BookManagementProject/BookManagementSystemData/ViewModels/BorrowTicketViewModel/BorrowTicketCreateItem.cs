@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookManagementSystemData.ViewModels.BorrowTicketDetailModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,6 @@ namespace BookManagementSystemData.ViewModels.BorrowTicketViewModel
         public DateTime? ReturnDeadline { get; set; }
         public bool? IsDone { get; set; }
         public string BorrowerId { get; set; }
+        public virtual ICollection<BorrowTicketDetailCreateItem> BorrowTicketDetails { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace BookManagementSystemData.Services
     {
         public Task<UserGetItems> Login(string id, string pass);
         public Task<IList<UserGetItems>> GetAllUsers();
+        public Task<UserGetItems> GetuserById(string id);
     }
     public class UserService : BaseService<User>, IUserService
     {
@@ -46,6 +47,19 @@ namespace BookManagementSystemData.Services
         public async Task<UserGetItems> Login(string id, string pass)
         {
             var user = _userRepo.FirstOrDefault(u => (u.Username == id && u.Password == pass));
+            if (user == null)
+            {
+                return null;
+            }
+            UserGetItems result = _mapper.Map<UserGetItems>(user);
+
+            return result;
+        }
+
+
+        public async Task<UserGetItems> GetuserById(string id)
+        {
+            var user = await _userRepo.FirstOrDefaultAsyn(u => (u.Username == id && u.IsAdmin == false));
             if (user == null)
             {
                 return null;

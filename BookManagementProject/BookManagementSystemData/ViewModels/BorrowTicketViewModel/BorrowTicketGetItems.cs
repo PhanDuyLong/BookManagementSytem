@@ -1,8 +1,6 @@
-﻿using System;
+﻿using BookManagementSystemData.ViewModels.BorrowTicketDetailModel;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookManagementSystemData.ViewModels.BorrowTicketViewModel
 {
@@ -15,5 +13,8 @@ namespace BookManagementSystemData.ViewModels.BorrowTicketViewModel
         public DateTime? ReturnDeadline { get; set; }
         public bool? IsDone { get; set; }
         public string BorrowerId { get; set; }
+        public string CreateName { get; set; }
+        public string BorrowName { get; set; }
+        public virtual ICollection<BorrowTicketDetailGetItems> BorrowTicketDetails { get; set; }
     }
 }

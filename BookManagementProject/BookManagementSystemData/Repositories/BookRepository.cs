@@ -10,7 +10,7 @@ namespace BookManagementSystemData.Repositories
 {
     public interface IBookRepository : IBaseRepository<Book>
     {
-        Task<List<Book>> FindBooksAsync(BookParameters bookParameters);
+        IQueryable<Book> FindBooksAsync(BookParameters bookParameters);
     }
     public class BookRepository : BaseRepository<Book>, IBookRepository
     {
@@ -20,21 +20,21 @@ namespace BookManagementSystemData.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<Book>> FindBooksAsync(BookParameters bookParameters)
+        public IQueryable<Book> FindBooksAsync(BookParameters bookParameters)
         {
-            var books = Get();
+            var books = Get(b => b.Status != "Deleted");
 
             SearchByNameCategoryAndAuthor(ref books, bookParameters.SearchInput);
 
-            foreach (var book in books)
-            {
-                _dbContext.Entry(book)
-                    .Reference(b => b.Category)
-                    .Query()
-                    .Load();
-            }
+            //foreach (var book in books)
+            //{
+            //    _dbContext.Entry(book)
+            //        .Reference(b => b.Category)
+            //        .Query()
+            //        .Load();
+            //}
 
-            return await books.ToListAsync();
+            return books;
         }
 
         private void SearchByNameCategoryAndAuthor(ref IQueryable<Book> books, string searchInput)

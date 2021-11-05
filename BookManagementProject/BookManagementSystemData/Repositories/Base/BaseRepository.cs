@@ -18,6 +18,7 @@ namespace HMS.Data.Repositories.Base
         void Create(T entity);
         Task CreateAsyn(T entity);
         void Update(T entity);
+        Task UpdateAsyn(T entity);
         void Delete(T entity);
         IQueryable<T> Get(Expression<Func<T, bool>> predicate);
         Task<T> FirstOrDefaultAsyn(Expression<Func<T, bool>> predicate);
@@ -48,6 +49,7 @@ namespace HMS.Data.Repositories.Base
         public async Task CreateAsyn(T entity)
         {
             await _dbSet.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         public void Delete(T entity)
@@ -85,6 +87,12 @@ namespace HMS.Data.Repositories.Base
         {
             _dbSet.Update(entity);
             _dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsyn(T entity)
+        {
+            _dbSet.Update(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         public IQueryable<T> Get(Expression<Func<T, bool>> predicate)

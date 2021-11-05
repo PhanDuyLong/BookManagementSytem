@@ -46,5 +46,19 @@ namespace BookManagementSystemAPI.Controllers
 
             return Ok(result);
         }
+
+        // GET: api/login/id
+        [HttpGet("/{id}")]
+        public async Task<ActionResult<User>> GetById(string id)
+        {
+            var result = await _userService.GetuserById(id);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
     }
 }
