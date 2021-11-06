@@ -4,10 +4,17 @@
     <TargetFramework>net5.0</TargetFramework>
     <ApplicationIcon />
     <Win32Resource />
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\FPTU_2\FPTU\Fall2021\PRC391\Projects\BookManagementProject\BookManagementSystemAPI\BMSAPI.xml</DocumentationFile>
+    <DocumentationFile>bin\BookManagementSystemAPI.xml</DocumentationFile>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\BookManagementSystemAPI.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

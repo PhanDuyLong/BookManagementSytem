@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "apis1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/BookManagementSystemG3APIManagement/apis/bookmanangement",
+      "type": "apis.azure"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/groupproject3/databases/BookDB",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:Connection",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

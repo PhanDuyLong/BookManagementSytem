@@ -59,7 +59,7 @@ namespace BookManagementSystemAPI
 
 
                 //Config show comment of API
-                var filePath = Path.Combine(System.AppContext.BaseDirectory, "BMSAPI.xml");
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "BookManagementSystemAPI.xml");
                 c.IncludeXmlComments(filePath);
             });
 
@@ -78,7 +78,7 @@ namespace BookManagementSystemAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsProduction() || env.IsProduction() || env.IsStaging())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
@@ -101,8 +101,8 @@ namespace BookManagementSystemAPI
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
-            
+
         }
-        
+
     }
 }

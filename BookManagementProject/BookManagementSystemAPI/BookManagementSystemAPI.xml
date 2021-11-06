@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BookManagementSystemAPI</name>
+    </assembly>
+    <members>
+        <member name="M:BookManagementSystemAPI.Controllers.BooksController.GetBook(System.Int32)">
+            <summary>
+            Get Specific Book
+            </summary>
+            <response code="200">Returns the specific book</response>
+            <response code="404">Not Found book with id</response>
+            <response code="500">Server break</response>
+        </member>
+        <member name="M:BookManagementSystemAPI.Controllers.BooksController.GetBooks(BookManagementSystemData.Parameters.BookParameters)">
+            <summary>
+            Get Books
+            </summary>
+            <response code="200">Returns books</response>
+            <response code="404">Not Found books</response>
+            <response code="500">Server break</response>
+        </member>
+        <member name="M:BookManagementSystemAPI.Controllers.BooksController.PostBook(BookManagementSystemData.ViewModels.Book.CreateBookViewModel)">
+            <summary>
+            Create Book
+            </summary>
+            <response code="201">Created book successfully</response>
+            <response code="400">Some Fields are wrong</response>
+            <response code="500">Server break</response>
+        </member>
+        <member name="M:BookManagementSystemAPI.Controllers.BooksController.UpdateBook(System.Int32,BookManagementSystemData.ViewModels.Book.UpdateBookViewModel)">
+            <summary>
+            Update book
+            </summary>
+            <response code="204">No return</response>
+            /// <response code="400">Some Fields are wrong</response>
+            <response code="404">Not Found book</response>
+            <response code="500">Server break</response>
+        </member>
+        <member name="M:BookManagementSystemAPI.Controllers.BooksController.DeleteBook(System.Int32)">
+            <summary>
+            Delete book
+            </summary>
+            <response code="204">No return</response>
+            /// <response code="400">Some Fields are wrong</response>
+            <response code="404">Not Found book</response>
+            <response code="500">Server break</response>
+        </member>
+    </members>
+</doc>
